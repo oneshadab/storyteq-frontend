@@ -37,14 +37,19 @@ const searchTermTooShort = computed(() => searchTerm.value.length < props.minSea
 
 <template>
   <div class="autocomplete-container">
-    <input
-      class="search-input"
-      v-model="searchTerm"
-      :placeholder="placeholder"
-      :autofocus="autoFocus"
-      @focus="isFocused = true"
-      @blur="isFocused = false"
-    />
+    <div class="search-input-container">
+      <input
+        class="search-input"
+        v-model="searchTerm"
+        :placeholder="placeholder"
+        :autofocus="autoFocus"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
+      />
+      <button v-if="searchTerm" class="clear-button" @click="searchTerm = ''" type="button">
+        ✕
+      </button>
+    </div>
     <div v-if="showSuggestions" class="suggestions-container">
       <p v-if="searchTermTooShort" class="suggestions-hint">
         Enter {{ minSearchTermSize - searchTerm.length }} more character(s) to search
@@ -70,6 +75,28 @@ const searchTermTooShort = computed(() => searchTerm.value.length < props.minSea
 .autocomplete-container {
   position: relative;
   width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.clear-button {
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.clear-button:hover {
+  color: var(--color-text);
 }
 
 .search-input {
