@@ -3,7 +3,8 @@ import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    suggestions: string[]
+    // TODO: Write proper type definition
+    suggestions: any[]
     autoFocus?: boolean
     loading?: boolean
     placeholder?: string
@@ -20,7 +21,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  select: [suggestion: string]
+  select: [suggestion: any]
 }>()
 
 const searchTerm = defineModel<string>({ required: true })
@@ -30,7 +31,7 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
 </script>
 
 <template>
-  <div class="autocomplete-container" >
+  <div class="autocomplete-container">
     <input
       class="search-input"
       v-model="searchTerm"
@@ -52,7 +53,7 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
           @mousedown="emit('select', suggestion)"
         >
           <p>
-            {{ suggestion }}
+            <slot :suggestion="suggestion"></slot>
           </p>
         </li>
       </ul>

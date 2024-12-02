@@ -5,7 +5,6 @@ import AutoComplete from '@/components/AutoComplete.vue'
 
 const bookStore = useBookStore()
 const cityStore = useCityStore()
-
 </script>
 
 <template>
@@ -15,12 +14,17 @@ const cityStore = useCityStore()
         <h3>Books</h3>
         <AutoComplete
           v-model="bookStore.searchTerm"
-          :suggestions="bookStore.books?.map((book) => book.title) ?? []"
+          :suggestions="bookStore.books ?? []"
           placeholder="Search books..."
           :loading="bookStore.loading"
           :auto-focus="true"
-          @select="bookStore.searchTerm = $event"
-        />
+          @select="bookStore.searchTerm = $event.title"
+        >
+          <template v-slot="{ suggestion: book }">
+            <p class="book-title">{{ book.title }}</p>
+            <p class="book-author">{{ book.author }}</p>
+          </template>
+        </AutoComplete>
       </div>
       <div>
         <h3>Cities</h3>
@@ -30,7 +34,11 @@ const cityStore = useCityStore()
           placeholder="Search cities..."
           :loading="cityStore.loading"
           @select="cityStore.searchTerm = $event"
-        />
+        >
+          <template v-slot="{ suggestion: city }">
+            <p class="city-name">{{ city }}</p>
+          </template>
+        </AutoComplete>
       </div>
     </div>
   </div>
@@ -57,6 +65,10 @@ const cityStore = useCityStore()
 .search-view > div {
   flex: 1;
   width: 100%;
+}
+
+.book-title {
+  font-weight: bold;
 }
 
 @media (max-width: 1024px) {
