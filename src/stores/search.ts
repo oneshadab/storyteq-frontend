@@ -1,17 +1,20 @@
-import { ref, computed } from 'vue'
+import { ref, computed   } from 'vue'
 import { defineStore } from 'pinia'
-import dataset from '@/data/dataset'
+import { useBooksStore } from '@/stores/books'  
+import { useCitiesStore } from '@/stores/cities'
 
 export const useSearchStore = defineStore('search', () => {
-  // TODO: Move to query params
+  const booksStore = useBooksStore()
+  const citiesStore = useCitiesStore()
+
   const searchTerm = ref('')
 
   const books = computed(() => {
-    return dataset.books.filter((book) => book.title.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    return booksStore.books.filter((book) => book.title.toLowerCase().includes(searchTerm.value.toLowerCase()))
   })
 
   const cities = computed(() => {
-    return dataset.cities.filter((city) => city.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    return citiesStore.cities.filter((city) => city.toLowerCase().includes(searchTerm.value.toLowerCase()))
   })
 
   return { searchTerm, books, cities }
