@@ -1,6 +1,6 @@
-import { ref, computed   } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useBooksStore } from '@/stores/books'  
+import { useBooksStore } from '@/stores/books'
 import { useCitiesStore } from '@/stores/cities'
 
 export const useSearchStore = defineStore('search', () => {
@@ -9,13 +9,14 @@ export const useSearchStore = defineStore('search', () => {
 
   const searchTerm = ref('')
 
-  const books = computed(() => {
-    return booksStore.books.filter((book) => book.title.toLowerCase().includes(searchTerm.value.toLowerCase()))
-  })
+  const isSearchTermShort = computed(() => searchTerm.value.length < 3)
 
-  const cities = computed(() => {
-    return citiesStore.cities.filter((city) => city.toLowerCase().includes(searchTerm.value.toLowerCase()))
-  })
+  function matchesSearchTerm(value: string) {
+    return isSearchTermShort.value || value.toLowerCase().includes(searchTerm.value.toLowerCase())
+  }
 
-  return { searchTerm, books, cities }
+  const books = computed(() => booksStore.books.filter((book) => matchesSearchTerm(book.title)))
+  const cities = computed(() => citiesStore.cities.filter((city) => matchesSearchTerm(city)))
+
+  return { searchTerm, isSearchTermShort, books, cities }
 })

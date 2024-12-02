@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import Book from '@/components/Book.vue';
-import City from '@/components/City.vue';
+import Book from '@/components/Book.vue'
+import City from '@/components/City.vue'
 import { useSearchStore } from '@/stores/search'
 
 const searchStore = useSearchStore()
@@ -8,7 +8,10 @@ const searchStore = useSearchStore()
 
 <template>
   <div>
-    <input v-model="searchStore.searchTerm" />
+    <input v-model="searchStore.searchTerm" placeholder="Search for books or cities" autofocus />
+    <p v-if="searchStore.isSearchTermShort">
+      Enter {{ 3 - searchStore.searchTerm.length }} more character(s) to search
+    </p>
   </div>
   <div>
     <h2>Books</h2>
