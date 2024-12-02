@@ -1,8 +1,16 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import dataset from '@/data/dataset'
+import { searchCities, type City } from '@/api/city'
+import { useQuery } from '@/helpers/useQuery'
 
 export const useCityStore = defineStore('city', () => {
-  const cities = ref(dataset.cities)
-  return { cities }
+  const searchTerm = ref('')
+  const citiesQuery = useQuery(searchTerm, () => searchCities(searchTerm.value))
+
+  return {
+    searchTerm,
+    cities: citiesQuery.data,
+    loading: citiesQuery.loading,
+    error: citiesQuery.error,
+  }
 })

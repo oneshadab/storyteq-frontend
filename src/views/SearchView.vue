@@ -1,13 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { useBookStore } from '@/stores/book'
 import { useCityStore } from '@/stores/city'
 import AutoComplete from '@/components/AutoComplete.vue'
 
-const bookSearchTerm = ref('')
 const bookStore = useBookStore()
-
-const citySearchTerm = ref('')
 const cityStore = useCityStore()
 
 const onSelect = (suggestion: string) => {
@@ -18,20 +14,22 @@ const onSelect = (suggestion: string) => {
 <template>
   <div class="search-view">
     <div>
-      <h1>Search Books</h1>
+      <h3>Search Books</h3>
       <AutoComplete
-        v-model="bookSearchTerm"
-        :suggestions="bookStore.bookTitles"
+        v-model="bookStore.searchTerm"
+        :suggestions="bookStore.books?.map((book) => book.title) ?? []"
         placeholder="Search books..."
+        :loading="bookStore.loading"
         @select="onSelect"
       />
     </div>
     <div>
-      <h1>Search Cities</h1>
+      <h3>Search Cities</h3>
       <AutoComplete
-        v-model="citySearchTerm"
-        :suggestions="cityStore.cities"
+        v-model="cityStore.searchTerm"
+        :suggestions="cityStore.cities ?? []"
         placeholder="Search cities..."
+        :loading="cityStore.loading"
         @select="onSelect"
       />
     </div>
@@ -41,11 +39,13 @@ const onSelect = (suggestion: string) => {
 <style scoped>
 .search-view {
   display: flex;
-  flex-direction: column;
   gap: 2em;
   align-items: center;
-  margin: 8em;
-  width: 50%;
-  max-width: 600px;
+  padding: 8em;
+  width: 100%;
+}
+
+.search-view > div {
+  flex: 1;
 }
 </style>

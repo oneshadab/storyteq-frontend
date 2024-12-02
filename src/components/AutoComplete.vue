@@ -4,11 +4,13 @@ import { computed, ref } from 'vue'
 const props = withDefaults(
   defineProps<{
     suggestions: string[]
+    loading?: boolean
     placeholder?: string
     minSearchTermSize?: number
     maxSuggestions?: number
   }>(),
   {
+    loading: false,
     minSearchTermSize: 3,
     maxSuggestions: 50,
     placeholder: 'Search...',
@@ -22,11 +24,7 @@ const emit = defineEmits<{
 const searchTerm = defineModel<string>({ required: true })
 
 const showSuggestions = ref(false)
-const filteredSuggestions = computed(() =>
-  props.suggestions
-    .filter((item) => item.toLowerCase().includes(searchTerm.value.toLowerCase()))
-    .slice(0, props.maxSuggestions),
-)
+const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSuggestions))
 </script>
 
 <template>
@@ -39,13 +37,14 @@ const filteredSuggestions = computed(() =>
       @blur="showSuggestions = false"
     />
     <div v-if="showSuggestions" class="suggestions-container">
-      <p v-if="searchTerm.length < props.minSearchTermSize" class="no-suggestions">
+      <p v-if="searchTerm.length < props.minSearchTermSize" class="suggestions-hint">
         Enter {{ props.minSearchTermSize - searchTerm.length }} more character(s)
       </p>
-      <p v-else-if="filteredSuggestions.length === 0" class="no-suggestions">No matches found</p>
+      <p v-else-if="loading" class="suggestions-loading">Loading...</p>
+      <p v-else-if="visibleSuggestions.length === 0" class="suggestions-empty">No matches found</p>
       <ul v-else>
         <li
-          v-for="suggestion in filteredSuggestions"
+          v-for="suggestion in visibleSuggestions"
           class="suggestion-item"
           @click="emit('select', suggestion)"
         >

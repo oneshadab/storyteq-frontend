@@ -1,9 +1,16 @@
-import { ref, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import dataset from '@/data/dataset'
+import { searchBooks, type Book } from '@/api/book'
+import { useQuery } from '@/helpers/useQuery'
 
 export const useBookStore = defineStore('book', () => {
-  const books = ref(dataset.books)
-  const bookTitles = computed(() => books.value.map((book) => book.title))
-  return { books, bookTitles }
+  const searchTerm = ref('')
+  const booksQuery = useQuery(searchTerm, () => searchBooks(searchTerm.value))
+
+  return {
+    searchTerm,
+    books: booksQuery.data,
+    loading: booksQuery.loading,
+    error: booksQuery.error,
+  }
 })
