@@ -9,6 +9,10 @@ const bookStore = useBookStore()
 
 const citySearchTerm = ref('')
 const cityStore = useCityStore()
+
+const onSelect = (suggestion: string) => {
+  alert(`Selected: ${suggestion}`)
+}
 </script>
 
 <template>
@@ -17,8 +21,9 @@ const cityStore = useCityStore()
       <h1>Search Books</h1>
       <AutoComplete
         v-model="bookSearchTerm"
-        :suggestions="bookStore.books.map((book) => book.title)"
+        :suggestions="bookStore.bookTitles"
         placeholder="Search books..."
+        @select="onSelect"
       />
     </div>
     <div>
@@ -27,7 +32,7 @@ const cityStore = useCityStore()
         v-model="citySearchTerm"
         :suggestions="cityStore.cities"
         placeholder="Search cities..."
-        @select="alert('selected')"
+        @select="onSelect"
       />
     </div>
   </div>

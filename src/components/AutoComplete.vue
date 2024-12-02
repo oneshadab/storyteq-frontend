@@ -5,22 +5,27 @@ const props = withDefaults(
   defineProps<{
     suggestions: string[]
     placeholder?: string
-    minLength?: number
+    minSearchTermSize?: number
+    maxSuggestions?: number
   }>(),
   {
-    minLength: 3,
+    minSearchTermSize: 3,
+    maxSuggestions: 50,
     placeholder: 'Search...',
   },
 )
 
 const emit = defineEmits<{
-  (e: 'select', suggestion: string): void
+  select: [suggestion: string]
 }>()
 
 const searchTerm = defineModel<string>({ required: true })
+
 const showSuggestions = ref(false)
 const filteredSuggestions = computed(() =>
-  props.suggestions.filter((item) => item.toLowerCase().includes(searchTerm.value.toLowerCase())),
+  props.suggestions
+    .filter((item) => item.toLowerCase().includes(searchTerm.value.toLowerCase()))
+    .slice(0, props.maxSuggestions),
 )
 </script>
 
@@ -34,13 +39,19 @@ const filteredSuggestions = computed(() =>
       @blur="showSuggestions = false"
     />
     <div v-if="showSuggestions" class="suggestions-container">
-      <p v-if="searchTerm.length < props.minLength" class="no-suggestions">
-        Enter {{ props.minLength - searchTerm.length }} more character(s) for suggestions
+      <p v-if="searchTerm.length < props.minSearchTermSize" class="no-suggestions">
+        Enter {{ props.minSearchTermSize - searchTerm.length }} more character(s)
       </p>
       <p v-else-if="filteredSuggestions.length === 0" class="no-suggestions">No matches found</p>
       <ul v-else>
-        <li v-for="suggestion in filteredSuggestions" class="suggestion-item" @click="emit('select', suggestion)">
-          {{ suggestion }}
+        <li
+          v-for="suggestion in filteredSuggestions"
+          class="suggestion-item"
+          @click="emit('select', suggestion)"
+        >
+          <p>
+            {{ suggestion }}
+          </p>
         </li>
       </ul>
     </div>
@@ -70,6 +81,8 @@ const filteredSuggestions = computed(() =>
   border-radius: 0 0 4px 4px;
   background-color: white;
   z-index: 1000;
+  max-height: 10em;
+  overflow-y: auto;
 }
 
 .suggestions-container ul {
@@ -78,12 +91,12 @@ const filteredSuggestions = computed(() =>
   padding: 0;
 }
 
-.no-suggestions {
+.suggestions-container p {
   font-size: 0.8em;
+  padding: 8px;
 }
 
 .suggestion-item {
-  padding: 8px;
   cursor: pointer;
 }
 
