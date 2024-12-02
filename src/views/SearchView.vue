@@ -1,30 +1,46 @@
 <script lang="ts" setup>
-import Book from '@/components/Book.vue'
-import City from '@/components/City.vue'
-import { useSearchStore } from '@/stores/search'
+import { ref } from 'vue'
+import { useBookStore } from '@/stores/book'
+import { useCityStore } from '@/stores/city'
+import AutoComplete from '@/components/AutoComplete.vue'
 
-const searchStore = useSearchStore()
+const bookSearchTerm = ref('')
+const bookStore = useBookStore()
+
+const citySearchTerm = ref('')
+const cityStore = useCityStore()
 </script>
 
 <template>
-  <div>
-    <input v-model="searchStore.searchTerm" placeholder="Search for books or cities" autofocus />
-    <p v-if="searchStore.isSearchTermShort">
-      Enter {{ 3 - searchStore.searchTerm.length }} more character(s) to search
-    </p>
-  </div>
-  <div>
-    <h2>Books</h2>
-    <ul v-if="searchStore.books.length > 0">
-      <Book v-for="book in searchStore.books" :book="book" />
-    </ul>
-    <p v-else>No books found</p>
-  </div>
-  <div>
-    <h2>Cities</h2>
-    <ul v-if="searchStore.cities.length > 0">
-      <City v-for="city in searchStore.cities" :city="city" />
-    </ul>
-    <p v-else>No cities found</p>
+  <div class="search-view">
+    <div>
+      <h1>Search Books</h1>
+      <AutoComplete
+        v-model="bookSearchTerm"
+        :suggestions="bookStore.books.map((book) => book.title)"
+        placeholder="Search books..."
+      />
+    </div>
+    <div>
+      <h1>Search Cities</h1>
+      <AutoComplete
+        v-model="citySearchTerm"
+        :suggestions="cityStore.cities"
+        placeholder="Search cities..."
+        @select="alert('selected')"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped>
+.search-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: center;
+  margin: 8em;
+  width: 50%;
+  max-width: 600px;
+}
+</style>
