@@ -6,9 +6,6 @@ import AutoComplete from '@/components/AutoComplete.vue'
 const bookStore = useBookStore()
 const cityStore = useCityStore()
 
-const onSelect = (suggestion: string) => {
-  alert(`Selected: ${suggestion}`)
-}
 </script>
 
 <template>
@@ -22,7 +19,7 @@ const onSelect = (suggestion: string) => {
           placeholder="Search books..."
           :loading="bookStore.loading"
           :auto-focus="true"
-          @select="onSelect"
+          @select="bookStore.searchTerm = $event"
         />
       </div>
       <div>
@@ -32,7 +29,7 @@ const onSelect = (suggestion: string) => {
           :suggestions="cityStore.cities ?? []"
           placeholder="Search cities..."
           :loading="cityStore.loading"
-          @select="onSelect"
+          @select="cityStore.searchTerm = $event"
         />
       </div>
     </div>

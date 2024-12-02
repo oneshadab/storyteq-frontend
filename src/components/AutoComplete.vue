@@ -30,7 +30,7 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
 </script>
 
 <template>
-  <div class="autocomplete-container">
+  <div class="autocomplete-container" >
     <input
       class="search-input"
       v-model="searchTerm"
@@ -49,7 +49,7 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
         <li
           v-for="suggestion in visibleSuggestions"
           class="suggestion-item"
-          @click="emit('select', suggestion)"
+          @mousedown="emit('select', suggestion)"
         >
           <p>
             {{ suggestion }}
