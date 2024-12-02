@@ -12,40 +12,60 @@ const onSelect = (suggestion: string) => {
 </script>
 
 <template>
-  <div class="search-view">
-    <div>
-      <h3>Search Books</h3>
-      <AutoComplete
-        v-model="bookStore.searchTerm"
-        :suggestions="bookStore.books?.map((book) => book.title) ?? []"
-        placeholder="Search books..."
-        :loading="bookStore.loading"
-        @select="onSelect"
-      />
-    </div>
-    <div>
-      <h3>Search Cities</h3>
-      <AutoComplete
-        v-model="cityStore.searchTerm"
-        :suggestions="cityStore.cities ?? []"
-        placeholder="Search cities..."
-        :loading="cityStore.loading"
-        @select="onSelect"
-      />
+  <div class="search-view-container">
+    <div class="search-view">
+      <div>
+        <h3>Books</h3>
+        <AutoComplete
+          v-model="bookStore.searchTerm"
+          :suggestions="bookStore.books?.map((book) => book.title) ?? []"
+          placeholder="Search books..."
+          :loading="bookStore.loading"
+          :auto-focus="true"
+          @select="onSelect"
+        />
+      </div>
+      <div>
+        <h3>Cities</h3>
+        <AutoComplete
+          v-model="cityStore.searchTerm"
+          :suggestions="cityStore.cities ?? []"
+          placeholder="Search cities..."
+          :loading="cityStore.loading"
+          @select="onSelect"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.search-view-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .search-view {
   display: flex;
   gap: 2em;
   align-items: center;
+  justify-content: center;
   padding: 8em;
+  max-width: 1200px;
+  min-width: 400px;
   width: 100%;
 }
 
 .search-view > div {
   flex: 1;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .search-view {
+    flex-direction: column;
+    padding: 8em 4em;
+  }
 }
 </style>
