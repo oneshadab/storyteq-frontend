@@ -1,33 +1,38 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
-const props = withDefaults(
-  defineProps<{
-    // TODO: Write proper type definition
-    suggestions: any[]
-    autoFocus?: boolean
-    loading?: boolean
-    placeholder?: string
-    minSearchTermSize?: number
-    maxSuggestions?: number
-  }>(),
-  {
-    loading: false,
-    autoFocus: false,
-    minSearchTermSize: 3,
-    maxSuggestions: 50,
-    placeholder: 'Search...',
-  },
-)
+interface Props {
+  // TODO: Write proper type definition
+  suggestions: any[]
+  loading?: boolean
+  autoFocus?: boolean
+  minSearchTermSize?: number
+  maxSuggestions?: number
+  placeholder?: string
+}
 
-const emit = defineEmits<{
-  select: [suggestion: any]
-}>()
+interface Emits {
+  (e: 'select', suggestion: any): void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  autoFocus: false,
+  minSearchTermSize: 3,
+  maxSuggestions: 50,
+  placeholder: 'Search...',
+})
+
+const emit = defineEmits<Emits>()
 
 const searchTerm = defineModel<string>({ required: true })
 
-const showSuggestions = ref(false)
+const isFocused = ref(false)
 const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSuggestions))
+
+const showSuggestions = computed(() => searchTerm.value && isFocused.value)
+const emptyResult = computed(() => visibleSuggestions.value.length === 0)
+const searchTermTooShort = computed(() => searchTerm.value.length < props.minSearchTermSize)
 </script>
 
 <template>
@@ -37,15 +42,15 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
       v-model="searchTerm"
       :placeholder="placeholder"
       :autofocus="autoFocus"
-      @focus="showSuggestions = true"
-      @blur="showSuggestions = false"
+      @focus="isFocused = true"
+      @blur="isFocused = false"
     />
-    <div v-if="searchTerm && showSuggestions" class="suggestions-container">
-      <p v-if="searchTerm.length < props.minSearchTermSize" class="suggestions-hint">
-        Enter {{ props.minSearchTermSize - searchTerm.length }} more character(s) to search
+    <div v-if="showSuggestions" class="suggestions-container">
+      <p v-if="searchTermTooShort" class="suggestions-hint">
+        Enter {{ minSearchTermSize - searchTerm.length }} more character(s) to search
       </p>
       <p v-else-if="loading" class="suggestions-loading">Loading...</p>
-      <p v-else-if="visibleSuggestions.length === 0" class="suggestions-empty">No matches found</p>
+      <p v-else-if="emptyResult" class="suggestions-empty">No matches found</p>
       <ul v-else>
         <li
           v-for="suggestion in visibleSuggestions"
@@ -87,7 +92,6 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
   right: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
-  background-color: white;
   z-index: 1000;
   max-height: 15em;
   overflow-y: auto;
