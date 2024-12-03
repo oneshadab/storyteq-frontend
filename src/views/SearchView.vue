@@ -1,42 +1,38 @@
 <script lang="ts" setup>
-import { useBookStore } from '@/stores/book'
 import { useCityStore } from '@/stores/city'
+import { useBookStore } from '@/stores/book'
 import AutoComplete from '@/components/AutoComplete.vue'
 
-const bookStore = useBookStore()
 const cityStore = useCityStore()
+const bookStore = useBookStore()
 </script>
 
 <template>
   <div class="search-view-container">
     <div class="search-view">
       <div>
+        <h3>Cities</h3>
+        <AutoComplete
+          v-model="cityStore.searchTerm"
+          :suggestions="cityStore.cities ?? []"
+          :loading="cityStore.loading"
+          :auto-focus="true"
+          @select="cityStore.searchTerm = $event"
+          placeholder="Search cities..."
+        />
+      </div>
+      <div>
         <h3>Books</h3>
         <AutoComplete
           v-model="bookStore.searchTerm"
           :suggestions="bookStore.books ?? []"
           :loading="bookStore.loading"
-          :auto-focus="true"
           @select="bookStore.searchTerm = $event.title"
           placeholder="Search books..."
         >
           <template v-slot="{ suggestion: book }">
             <p class="book-title">{{ book.title }}</p>
             <p class="book-author">{{ book.author }}</p>
-          </template>
-        </AutoComplete>
-      </div>
-      <div>
-        <h3>Cities</h3>
-        <AutoComplete
-          v-model="cityStore.searchTerm"
-          :suggestions="cityStore.cities ?? []"
-          :loading="cityStore.loading"
-          @select="cityStore.searchTerm = $event"
-          placeholder="Search cities..."
-        >
-          <template v-slot="{ suggestion: city }">
-            <p class="city-name">{{ city }}</p>
           </template>
         </AutoComplete>
       </div>
