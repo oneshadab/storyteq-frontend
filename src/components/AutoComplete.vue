@@ -27,7 +27,7 @@ const emit = defineEmits<Emits>()
 
 const searchTerm = defineModel<string>({ required: true })
 
-const isFocused = ref(false)
+const isFocused = ref(true)
 const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSuggestions))
 
 const showSuggestions = computed(() => searchTerm.value && isFocused.value)
@@ -63,7 +63,9 @@ const searchTermTooShort = computed(() => searchTerm.value.length < props.minSea
           @mousedown="emit('select', suggestion)"
         >
           <p>
-            <slot :suggestion="suggestion"></slot>
+            <slot :suggestion="suggestion">
+              {{ suggestion }}
+            </slot>
           </p>
         </li>
       </ul>
