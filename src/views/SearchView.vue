@@ -10,7 +10,7 @@ const bookStore = useBookStore()
 <template>
   <div class="search-view-container">
     <div class="search-view">
-      <div>
+      <div class="search-cities">
         <h3>Cities</h3>
         <AutoComplete
           v-model="cityStore.searchTerm"
@@ -21,7 +21,7 @@ const bookStore = useBookStore()
           placeholder="Search cities..."
         />
       </div>
-      <div>
+      <div class="search-books">
         <h3>Books</h3>
         <AutoComplete
           v-model="bookStore.searchTerm"

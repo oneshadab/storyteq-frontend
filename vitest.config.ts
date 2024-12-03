@@ -11,6 +11,8 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       coverage: {
         include: ['src/**/*.{ts,vue}'],
+        // To be covered by e2e tests
+        exclude: ['src/main.ts', 'src/App.vue'],
       },
     },
   }),
