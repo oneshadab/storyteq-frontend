@@ -1,17 +1,19 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import AutoComplete from '../AutoComplete.vue'
+import AutoComplete from '@/components/AutoComplete.vue'
 
 describe('AutoComplete', () => {
-  it('renders suggestions from search term', () => {
+  it('should render suggestions and the search term', () => {
     const searchTerm = 'tes'
-    const suggestions = ['test suggestion']
+    const suggestions = ['test suggestion', 'other suggestion']
 
     const wrapper = mount(AutoComplete, {
       props: { suggestions, modelValue: searchTerm },
     })
 
-    expect(wrapper.text()).toContain(suggestions[0])
+    suggestions.forEach((suggestion) => {
+      expect(wrapper.text()).toContain(suggestion)
+    })
   })
 })
