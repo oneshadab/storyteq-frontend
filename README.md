@@ -1,18 +1,17 @@
-# front-end
+# AutoComplete Component ![code coverage](https://img.shields.io/badge/code--coverage-93%25-brightgreen)
 
-This template should help get you started developing with Vue 3 in Vite.
+This is an implementation of the autocomplete component using Vue.
 
-## Recommended IDE Setup
+Specifications for the project can be found in [Spec.md](Spec.md).
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Table of Contents
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- [Project Setup](#project-setup)
+- [Development](#compile-and-hot-reload-for-development)
+- [Production](#type-check-compile-and-minify-for-production)
+- [Run Unit Tests](#run-unit-tests)
+- [Run Coverage](#run-coverage)
+- [Lint](#lint)
 
 ## Project Setup
 
@@ -38,23 +37,10 @@ npm run build
 npm run test:unit
 ```
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+### Run Coverage with [Vitest](https://vitest.dev/)
 
 ```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
+npm run test:coverage
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
