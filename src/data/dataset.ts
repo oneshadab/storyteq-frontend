@@ -54,4 +54,4 @@ const books = [
   },
 ]
 
-export default { cities, books };
+export default { cities, books }

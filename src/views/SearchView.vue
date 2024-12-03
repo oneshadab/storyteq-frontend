@@ -15,10 +15,10 @@ const cityStore = useCityStore()
         <AutoComplete
           v-model="bookStore.searchTerm"
           :suggestions="bookStore.books ?? []"
-          placeholder="Search books..."
           :loading="bookStore.loading"
           :auto-focus="true"
           @select="bookStore.searchTerm = $event.title"
+          placeholder="Search books..."
         >
           <template v-slot="{ suggestion: book }">
             <p class="book-title">{{ book.title }}</p>
@@ -31,9 +31,9 @@ const cityStore = useCityStore()
         <AutoComplete
           v-model="cityStore.searchTerm"
           :suggestions="cityStore.cities ?? []"
-          placeholder="Search cities..."
           :loading="cityStore.loading"
           @select="cityStore.searchTerm = $event"
+          placeholder="Search cities..."
         >
           <template v-slot="{ suggestion: city }">
             <p class="city-name">{{ city }}</p>
