@@ -4,14 +4,21 @@ This is an implementation of the autocomplete component using Vue.
 
 Specifications for the project can be found in [Spec.md](Spec.md).
 
+
 ## Table of Contents
 
+- [Demo](#demo)
 - [Project Setup](#project-setup)
 - [Development](#compile-and-hot-reload-for-development)
 - [Production](#type-check-compile-and-minify-for-production)
 - [Run Unit Tests](#run-unit-tests)
 - [Run Coverage](#run-coverage)
 - [Lint](#lint)
+
+## Demo
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/oneshadab/storyteq-frontend)
+
 
 ## Project Setup
 
