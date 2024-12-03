@@ -21,7 +21,6 @@ const bookStore = useBookStore()
           :suggestions="cityStore.cities ?? []"
           :loading="cityStore.loading"
           :auto-focus="true"
-          @select="cityStore.searchTerm = $event"
           placeholder="Search cities..."
         />
       </div>

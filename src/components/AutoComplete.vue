@@ -33,6 +33,11 @@ const visibleSuggestions = computed(() => props.suggestions.slice(0, props.maxSu
 const showSuggestions = computed(() => searchTerm.value && isFocused.value)
 const emptyResult = computed(() => visibleSuggestions.value.length === 0)
 const searchTermTooShort = computed(() => searchTerm.value.length < props.minSearchTermSize)
+
+const selectSuggestion = (suggestion: any) => {
+  searchTerm.value = suggestion
+  emit('select', suggestion)
+}
 </script>
 
 <template>
@@ -60,7 +65,7 @@ const searchTermTooShort = computed(() => searchTerm.value.length < props.minSea
         <li
           v-for="suggestion in visibleSuggestions"
           class="suggestion-item"
-          @mousedown="emit('select', suggestion)"
+          @mousedown="selectSuggestion(suggestion)"
         >
           <p>
             <slot :suggestion="suggestion">
